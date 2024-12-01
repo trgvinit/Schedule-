@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Schedule Notifications</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 20px;
+      background-color: #f4f4f9;
+    }
+    h1 {
+      color: #333;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f0f0f0;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      color: white;
+      background-color: #007BFF;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>My Daily Schedule</h1>
+  <table>
+    <tr>
+      <th>Time</th>
+      <th>Activity</th>
+    </tr>
+    <tr>
+      <td>5:30–6:30 AM</td>
+      <td>Workout + Martial Arts</td>
+    </tr>
+    <tr>
+      <td>6:30–7:00 AM</td>
+      <td>Bath</td>
+    </tr>
+    <tr>
+      <td>7:00–8:00 AM</td>
+      <td>Breakfast + Light Study/Relaxation</td>
+    </tr>
+    <tr>
+      <td>8:00–1:00 PM</td>
+      <td>Lectures</td>
+    </tr>
+    <tr>
+      <td>1:00–1:30 PM</td>
+      <td>Lunch</td>
+    </tr>
+    <tr>
+      <td>1:30–4:00 PM</td>
+      <td>Lectures</td>
+    </tr>
+    <tr>
+      <td>4:00–5:30 PM</td>
+      <td>Homework + Study</td>
+    </tr>
+    <tr>
+      <td>5:30–6:00 PM</td>
+      <td>Snacks/Relaxation</td>
+    </tr>
+    <tr>
+      <td>6:00–7:30 PM</td>
+      <td>Guitar (or alternate hobbies)</td>
+    </tr>
+    <tr>
+      <td>7:30–8:30 PM</td>
+      <td>Homework/Study</td>
+    </tr>
+    <tr>
+      <td>8:30–9:00 PM</td>
+      <td>Dinner</td>
+    </tr>
+    <tr>
+      <td>9:00–10:30 PM</td>
+      <td>Learning Skills/Creative Hobbies</td>
+    </tr>
+    <tr>
+      <td>10:30 PM–5:30 AM</td>
+      <td>Sleep</td>
+    </tr>
+  </table>
+  <button onclick="startNotifications()">Start Notifications</button>
+
+  <script>
+    const schedule = [
+      { time: "05:30", activity: "Workout + Martial Arts" },
+      { time: "06:30", activity: "Bath" },
+      { time: "07:00", activity: "Breakfast + Light Study/Relaxation" },
+      { time: "08:00", activity: "Lectures" },
+      { time: "13:00", activity: "Lunch" },
+      { time: "13:30", activity: "Lectures" },
+      { time: "16:00", activity: "Homework + Study" },
+      { time: "17:30", activity: "Snacks/Relaxation" },
+      { time: "18:00", activity: "Guitar (or alternate hobbies)" },
+      { time: "19:30", activity: "Homework/Study" },
+      { time: "20:30", activity: "Dinner" },
+      { time: "21:00", activity: "Learning Skills/Creative Hobbies" },
+      { time: "22:30", activity: "Sleep" }
+    ];
+
+    function startNotifications() {
+      if (!("Notification" in window)) {
+        alert("This browser does not support desktop notifications.");
+        return;
+      }
+
+      Notification.requestPermission().then(permission => {
+        if (permission !== "granted") {
+          alert("Please allow notifications to enable this feature.");
+          return;
+        }
+
+        schedule.forEach(item => {
+          const [hour, minute] = item.time.split(":").map(Number);
+          const now = new Date();
+          const notificationTime = new Date();
+          notificationTime.setHours(hour, minute, 0);
+
+          if (notificationTime > now) {
+            setTimeout(() => {
+              new Notification("Activity Reminder", {
+                body: item.activity,
+                icon: "https://via.placeholder.com/100"
+              });
+            }, notificationTime - now);
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>
+
+
+
